@@ -6,6 +6,7 @@ import configs
 from time import sleep
 import sys
 import run_ZSSR_single_input
+from PIL import Image
 
 
 def main(conf_name, gpu):
@@ -17,6 +18,15 @@ def main(conf_name, gpu):
         exec ('conf = configs.%s' % conf_name)
     res_dir = prepare_result_dir(conf)
     local_dir = os.path.dirname(__file__)
+
+    files = [file_path for file_path in glob.glob('%s/*.jpg' % conf.input_path)
+             if not file_path[-7:-4] == '_gt']
+    
+    
+    for file_ind, input_file in enumerate(files):
+        img = Image.open(input_file)
+        img=img.convert('RGB')
+        img.save( input_file[:-4]+'.png')
 
     # We take all png files that are not ground truth
     files = [file_path for file_path in glob.glob('%s/*.png' % conf.input_path)
