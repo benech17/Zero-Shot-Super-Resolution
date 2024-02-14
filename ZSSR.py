@@ -331,7 +331,7 @@ class ZSSR:
             self.learning_rate_policy()
 
             # stop when minimum learning rate was passed
-            if self.learning_rate < self.conf.min_learning_rate:
+            if self.learning_rate <= self.conf.min_learning_rate:
                 break
 
     def father_to_son(self, hr_father):

@@ -9,7 +9,7 @@ import run_ZSSR_single_input
 from PIL import Image
 
 
-def main(conf_name, gpu):
+def main(conf_name, gpu,single_image_path=None):
     if conf_name=='X2_ONE_JUMP_IDEAL_CONF':
         conf = configs.X2_ONE_JUMP_IDEAL_CONF
     elif conf_name== 'X2_IDEAL_WITH_PLOT_CONF':
@@ -34,9 +34,12 @@ def main(conf_name, gpu):
         img=img.convert('RGB')
         img.save( input_file[:-4]+'.png')
 
-    # We take all png files that are not ground truth
-    files = [file_path for file_path in glob.glob('%s/*.png' % conf.input_path)
-             if not file_path[-7:-4] == '_gt']
+    if single_image_path!=None:
+        files=[single_image_path]
+    else:
+        # We take all png files that are not ground truth
+        files = [file_path for file_path in glob.glob('%s/*.png' % conf.input_path)
+                if not file_path[-7:-4] == '_gt']
 
     # Loop over all the files
     for file_ind, input_file in enumerate(files):
