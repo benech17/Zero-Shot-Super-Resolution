@@ -15,9 +15,18 @@ def main(input_img, ground_truth, kernels, gpu, conf_str, results_path):
     kernels = None if kernels == '0' else kernels.split(';')[:-1]
 
     # Setup configuration and results directory
-    conf = configs.Config()
-    if conf_str is not None:
-        exec ('conf = configs.%s' % conf_str)
+    if conf_str=='X2_ONE_JUMP_IDEAL_CONF':
+        conf = configs.X2_ONE_JUMP_IDEAL_CONF
+    elif conf_str== 'X2_IDEAL_WITH_PLOT_CONF':
+        conf = configs.X2_IDEAL_WITH_PLOT_CONF
+    elif conf_str== 'X2_GRADUAL_IDEAL_CONF':
+        conf = configs.X2_GRADUAL_IDEAL_CONF
+    elif conf_str== 'X2_GIVEN_KERNEL_CONF':
+        conf = configs.X2_GIVEN_KERNEL_CONF
+    elif conf_str== 'X2_REAL_CONF':
+        conf = configs.X2_REAL_CONF
+    else:
+        conf = configs.Config()
     conf.result_path = results_path
 
     # Run ZSSR on the image

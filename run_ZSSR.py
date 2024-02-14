@@ -10,12 +10,18 @@ from PIL import Image
 
 
 def main(conf_name, gpu):
-    # Initialize configs and prepare result dir with date
-    if conf_name is None:
-        conf = configs.Config()
+    if conf_name=='X2_ONE_JUMP_IDEAL_CONF':
+        conf = configs.X2_ONE_JUMP_IDEAL_CONF
+    elif conf_name== 'X2_IDEAL_WITH_PLOT_CONF':
+        conf = configs.X2_IDEAL_WITH_PLOT_CONF
+    elif conf_name== 'X2_GRADUAL_IDEAL_CONF':
+        conf = configs.X2_GRADUAL_IDEAL_CONF
+    elif conf_name== 'X2_GIVEN_KERNEL_CONF':
+        conf = configs.X2_GIVEN_KERNEL_CONF
+    elif conf_name== 'X2_REAL_CONF':
+        conf = configs.X2_REAL_CONF
     else:
-        conf = None
-        exec ('conf = configs.%s' % conf_name)
+        conf = configs.Config()
     res_dir = prepare_result_dir(conf)
     local_dir = os.path.dirname(__file__)
 
@@ -48,7 +54,6 @@ def main(conf_name, gpu):
                 kernel_files_str = '0'
                 print('no kernel loaded')
                 break
-
         print(kernel_files)
 
         # This option uses all the gpu resources efficiently

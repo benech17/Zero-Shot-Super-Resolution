@@ -46,7 +46,7 @@ class Config:
     result_path = os.path.dirname(__file__) + '/results'
     create_results_dir = True
     input_path = local_dir = os.path.dirname(__file__) + '/test_data'
-    create_code_copy = True  # save a copy of the code in the results folder to easily match code changes to results
+    create_code_copy = False  # save a copy of the code in the results folder to easily match code changes to results
     display_test_results = True
     save_results = True
 
@@ -76,7 +76,7 @@ X2_IDEAL_WITH_PLOT_CONF.input_path = os.path.dirname(__file__) + '/example_with_
 X2_GRADUAL_IDEAL_CONF = Config()
 X2_GRADUAL_IDEAL_CONF.scale_factors = [[1.0, 1.5], [1.5, 1.0], [1.5, 1.5], [1.5, 2.0], [2.0, 1.5], [2.0, 2.0]]
 X2_GRADUAL_IDEAL_CONF.back_projection_iters = [6, 6, 8, 10, 10, 12]
-X2_GRADUAL_IDEAL_CONF.input_path = os.path.dirname(__file__) + '/set14'
+X2_GRADUAL_IDEAL_CONF.input_path = os.path.dirname(__file__) +'/example_with_gt'# '/set14'
 
 # Applying a given kernel. Rotations are canceled sense kernel may be non-symmetric
 X2_GIVEN_KERNEL_CONF = Config()
