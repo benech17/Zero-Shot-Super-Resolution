@@ -69,11 +69,9 @@ def main(conf_name, gpu,single_image_path=None):
 
             # Take the gpu with the most free memory
             cur_gpu = gpus[-1]
-
             # Run ZSSR from command line, open xterm for each run
-            os.system("xterm -hold -e " + conf.python_path +
-                      " %s/run_ZSSR_single_input.py '%s' '%s' '%s' '%s' '%s' '%s' alias python &"
-                      % (local_dir, input_file, ground_truth_file, kernel_files_str, cur_gpu, conf_name, res_dir))
+            
+            run_ZSSR_single_input.main(input_file, ground_truth_file, kernel_files_str, cur_gpu, conf_name, res_dir)
 
             # Verbose
             print('Ran file #%d: %s on GPU %d\n' % (file_ind, input_file, cur_gpu))
