@@ -5,7 +5,7 @@ class Config:
     # network meta params
     scale_factors = [[2.0, 2.0]]  # list of pairs (vertical, horizontal) for gradual increments in resolution
     base_change_sfs = []  # list of scales after which the input is changed to be the output (recommended for high sfs)
-    max_iters = 3000
+    max_iters = 500
     min_iters = 256
     min_learning_rate = 9e-6  # this tells the algorithm when to stop (specify lower than the last learning-rate)
     width = 64
@@ -40,7 +40,7 @@ class Config:
     run_test = True
     run_test_every = 50
     display_every = 20
-    name = 'test'
+    name = 'result'
     plot_losses = False
     result_path = os.path.dirname(__file__) + '/results'
     create_results_dir = True
@@ -63,33 +63,33 @@ class Config:
 # Basic default config (same as not specifying), non-gradual SRx2 with default bicubic kernel (Ideal case)
 # example is set to run on set14
 X2_ONE_JUMP_IDEAL_CONF = Config()
-X2_ONE_JUMP_IDEAL_CONF.input_path = os.path.dirname(__file__) + '/set14'
+X2_ONE_JUMP_IDEAL_CONF.input_path = os.path.dirname(__file__) + '/test_data'
 
 # Same as above but with visualization (Recommended for one image, interactive mode, for debugging)
 X2_IDEAL_WITH_PLOT_CONF = Config()
 X2_IDEAL_WITH_PLOT_CONF.plot_losses = True
 X2_IDEAL_WITH_PLOT_CONF.run_test_every = 20
-X2_IDEAL_WITH_PLOT_CONF.input_path = os.path.dirname(__file__) + '/example_with_gt'
+X2_IDEAL_WITH_PLOT_CONF.input_path = os.path.dirname(__file__) + '/test_data'
 
 # Gradual SRx2, to achieve superior results in the ideal case
 X2_GRADUAL_IDEAL_CONF = Config()
 X2_GRADUAL_IDEAL_CONF.scale_factors = [[1.0, 1.5], [1.5, 1.0], [1.5, 1.5], [1.5, 2.0], [2.0, 1.5], [2.0, 2.0]]
 X2_GRADUAL_IDEAL_CONF.back_projection_iters = [6, 6, 8, 10, 10, 12]
-X2_GRADUAL_IDEAL_CONF.input_path = os.path.dirname(__file__) +'/example_with_gt'# '/set14'
+X2_GRADUAL_IDEAL_CONF.input_path = os.path.dirname(__file__) +'/test_data'
 
 # Applying a given kernel. Rotations are canceled sense kernel may be non-symmetric
 X2_GIVEN_KERNEL_CONF = Config()
 X2_GIVEN_KERNEL_CONF.output_flip = False
 X2_GIVEN_KERNEL_CONF.augment_allow_rotation = False
 X2_GIVEN_KERNEL_CONF.back_projection_iters = [2]
-X2_GIVEN_KERNEL_CONF.input_path = os.path.dirname(__file__) + '/kernel_example'
+X2_GIVEN_KERNEL_CONF.input_path = os.path.dirname(__file__) + '/test_data'
 
 # An example for a typical setup for real images. (Kernel needed + mild unknown noise)
 # back-projection is not recommended because of the noise.
 X2_REAL_CONF = Config()
 X2_REAL_CONF.output_flip = False
 X2_REAL_CONF.back_projection_iters = [0]
-X2_REAL_CONF.input_path = os.path.dirname(__file__) + '/real_example'
+X2_REAL_CONF.input_path = os.path.dirname(__file__) + '/test_data'
 X2_REAL_CONF.noise_std = 0.0125
 X2_REAL_CONF.augment_allow_rotation = False
 X2_REAL_CONF.augment_scale_diff_sigma = 0

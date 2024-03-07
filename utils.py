@@ -190,8 +190,14 @@ def kernel_shift(kernel, sf):
 def prepare_result_dir(conf):
     # Create results directory
     if conf.create_results_dir:
-        conf.result_path += '/' + conf.name + strftime('_%b_%d_%H_%M_%S', localtime())
-        os.makedirs(conf.result_path)
+        conf.result_path += '/' + conf.name 
+        if not os.path.exists(conf.result_path):
+            # S'il n'existe pas, créez le dossier
+            os.makedirs(conf.result_path)
+        else:
+            # Si le dossier existe, vous pouvez choisir de ne rien faire ou d'afficher un message
+            print(f"Le dossier existe déjà.")
+               
 
     # Put a copy of all *.py files in results path, to be able to reproduce experimental results
     if conf.create_code_copy:

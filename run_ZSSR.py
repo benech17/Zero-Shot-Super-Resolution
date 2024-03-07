@@ -7,6 +7,8 @@ from time import sleep
 import sys
 import run_ZSSR_single_input
 from PIL import Image
+import datetime
+from loguru import logger
 
 
 def main(conf_name, gpu,single_image_path=None):
@@ -22,6 +24,7 @@ def main(conf_name, gpu,single_image_path=None):
         conf = configs.X2_REAL_CONF
     else:
         conf = configs.Config()
+    logger.info(f"Configuration possible : {conf_name}")
     res_dir = prepare_result_dir(conf)
     local_dir = os.path.dirname(__file__)
 
@@ -40,7 +43,8 @@ def main(conf_name, gpu,single_image_path=None):
         # We take all png files that are not ground truth
         files = [file_path for file_path in glob.glob('%s/*.png' % conf.input_path)
                 if not file_path[-7:-4] == '_gt']
-
+    
+    sorties = []
     # Loop over all the files
     for file_ind, input_file in enumerate(files):
 
@@ -55,9 +59,9 @@ def main(conf_name, gpu,single_image_path=None):
         for kernel_file in kernel_files:
             if not os.path.isfile(kernel_file[:-1]):
                 kernel_files_str = '0'
-                print('no kernel loaded')
+                logger.debug('no kernel loaded')
                 break
-        print(kernel_files)
+        logger.info(kernel_files)
 
         # This option uses all the gpu resources efficiently
         if gpu == 'all':
@@ -71,10 +75,10 @@ def main(conf_name, gpu,single_image_path=None):
             cur_gpu = gpus[-1]
             # Run ZSSR from command line, open xterm for each run
             
-            run_ZSSR_single_input.main(input_file, ground_truth_file, kernel_files_str, cur_gpu, conf_name, res_dir)
+            sortie = run_ZSSR_single_input.main(input_file, ground_truth_file, kernel_files_str, cur_gpu, conf_name, res_dir)
 
             # Verbose
-            print('Ran file #%d: %s on GPU %d\n' % (file_ind, input_file, cur_gpu))
+            logger.debug('Ran file #%d: %s on GPU %d\n' % (file_ind, input_file, cur_gpu))
 
             # Wait 5 seconds for the previous process to start using GPU. if we wouldn't wait then GPU memory will not
             # yet be taken and all process will start on the same GPU at once and later collapse.
@@ -82,10 +86,13 @@ def main(conf_name, gpu,single_image_path=None):
 
         # The other option is just to run sequentially on a chosen GPU.
         else:
-            run_ZSSR_single_input.main(input_file, ground_truth_file, kernel_files_str, gpu, conf_name, res_dir)
-
+            sortie = run_ZSSR_single_input.main(input_file, ground_truth_file, kernel_files_str, gpu, conf_name, res_dir)
+        sorties.append(sortie)
+    return sorties 
 
 if __name__ == '__main__':
     conf_str = sys.argv[1] if len(sys.argv) > 1 else None
     gpu_str = sys.argv[2] if len(sys.argv) > 2 else None
+    # Configuration de la journalisation avec Loguru
+    
     main(conf_str, gpu_str)
